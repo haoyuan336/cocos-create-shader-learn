@@ -11,14 +11,14 @@ const shader = {
         this._notTime = 0;
     },
     update(sprite, material) {
-        const now = Date.now();
-        let time = (now - this._start) / 1000;
+        // const now = Date.now();
+        // let time = (now - this._start) / 1000;
         // if (time >= 1) {
         //     time = 0;
         //     this._start = now;
         // }
 
-        material.setParamValue('time', Math.sin(time) * 0.1 + 0.05);
+        // material.setParamValue('time', Math.sin(time) * 0.1 + 0.05);
 
         // if (this._notTime !== undefined){
         //     this._notTime ++;
@@ -27,7 +27,12 @@ const shader = {
         //         material.setParamValue('time', time);
         //     }
         // }
-        
+        this._notTime += 0.01;
+        if (this._notTime >= 1) {
+            this._notTime = 0;
+        }
+        // material.setParamValue('time', this._notTime);
+        material.setParamValue('time', this._notTime);
     },
     defines: [],
     vert: `
@@ -50,11 +55,13 @@ const shader = {
         varying vec2 uv0;
         void main(){
             vec4 src_color = color * texture2D(texture, uv0).rgba;
-            float width = 0.03;
-            float start = tan(time);
-            if (uv0.x >  start && uv0.x < start + width){
-                gl_FragColor = vec4(src_color.r + 0.4, src_color.g + 0.4, src_color.b + 0.4, 1);
-            }else {
+            float width = 0.01;
+
+            float x = uv0.x - 0.5;
+            float y = uv0.y - 0.5;
+            if (x * x  + y * y > time && x * x  + y * y < time + width){
+                gl_FragColor = src_color + 0.4;
+            }else{
                 gl_FragColor = src_color;
 
             }
