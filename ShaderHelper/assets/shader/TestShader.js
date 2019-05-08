@@ -66,26 +66,11 @@ const shader = {
         
         void main(){
 
-
-            // vec4 color = 
-            // vec2 coordPos = vec2(gl_FragCoord.x / 360.0 * 2.0 - 1.0, gl_FragCoord.y / 640.0 * 2.0 - 1.0);
-
-
-            // float ss = sin(time  + coordPos.y);
-            // coordPos *= ss;
-
-
-            // coordPos.y = coordPos.y - 0.25;
-            // float r = length(coordPos);
-            // float a = atan(coordPos.x, coordPos.y) / 3.1415926;
-            // float h = abs(a);
-            // float d = (13.0*h - 22.0*h*h + 10.0*h*h*h)/(6.0-5.0*h);
-            // vec3 bgColor = vec3(1.0, 1.0, 1.0);
-            // vec3 redColor = vec3(1.0, 0.0, 0.0);
-            // float s = smoothstep(0.0, 0.1, d - r);
-            // float c = clamp( s   , 0.0, 1.0);
-            // vec3 endColor = mix(bgColor, redColor, s);
-            // gl_FragColor = vec4(endColor.xyz, 1.0);
+            vec3 bgColor = vec3(1.0, 1.0, 1.0);
+            vec3 redColor = vec3(1.0, 0.0, 0.0);
+            vec2 coordPos = vec2(gl_FragCoord.x / 640.0 * 2.0 - 1.0, gl_FragCoord.y / 360.0 * 2.0 - 1.0);
+            vec3 endColor = mix(bgColor, redColor, smoothstep(0.0, 0.1, sqrt(1.0 - pow(coordPos.x ,  2.0)) - coordPos.y));
+            gl_FragColor = vec4(endColor.xyz,1.0);
 
         }
     `,
